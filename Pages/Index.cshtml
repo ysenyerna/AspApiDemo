@@ -9,3 +9,33 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<script>
+
+// Add some example posts
+async function addPosts() {
+	const examplePosts = [
+		{ Title: "First Post", Content: "Hello World" },
+		{ title: "Second Post", content: "This is the second post..."},
+		{ title: "Another Post", content: "This is the third post."}
+	];
+
+	// Post each post to the API
+	for (const post of examplePosts ) {
+		await fetch("/api/posts", {
+			method: "POST",
+			headers: { "Content-Type": "application/json"},
+			body: JSON.stringify(post)
+		});
+	}
+}
+
+// Read and display the posts
+async function readPosts() {
+	const response = await fetch("/api/posts");
+	const posts = await response.json();
+	console.log(posts);
+}
+
+addPosts()
+.then(readPosts);
+</script>
