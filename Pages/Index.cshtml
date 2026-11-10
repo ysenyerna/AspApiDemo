@@ -5,16 +5,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Recent Posts</h1>
+	<p id="post-count">Total Posts: </p>
 </div>
+<div id="posts-container"></div>
 
 <script>
 
 // Add some example posts
 async function addPosts() {
 	const examplePosts = [
-		{ Title: "First Post", Content: "Hello World" },
+		{ title: "First Post", content: "Hello World" },
 		{ title: "Second Post", content: "This is the second post..."},
 		{ title: "Another Post", content: "This is the third post."}
 	];
@@ -31,11 +32,24 @@ async function addPosts() {
 
 // Read and display the posts
 async function readPosts() {
+	// Read posts
 	const response = await fetch("/api/posts");
 	const posts = await response.json();
-	console.log(posts);
+
+	// Display post count
+	document.getElementById("post-count").textContent = "Total Posts: " + posts.length;
+
+	// Display posts dynamically from most recent
+	posts.reverse().forEach(post => {
+		const element = document.createElement("p");
+		element.classList.add("post");
+		element.textContent = post.title;
+		document.getElementById("posts-container").appendChild(element);
+	});
 }
 
+// Run functions
 addPosts()
 .then(readPosts);
+
 </script>
